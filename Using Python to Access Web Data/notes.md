@@ -151,4 +151,38 @@ html_doc = "<html>a web page</html>"
 soup = BeautifulSoup(html_doc, 'html.parser')
 ```
 
+After getting the `BeautifulSoup` object one can get multiple attributes of the parsed document, like performing `soup('a')`, which returns a list of all the anchor tags that were found as `Tag` objects. Inside of these objects you can obtain multiple attributes and methods such as `tag.string`, to obtain the contents of the a tag, or `tag['href']`, to obtain the `'href'` attribute of the tag, etc.
 
+## Formatting Data
+
+The Wire Protocol refers to the way in which data leaves a system to enter another, maintaining what is called a *wire*, an agreed on format. It is a protocol agreed on by both systems for the communication of information. The sender serializes the data into the wire, and the receiver de-serializes it to retrieve it. This is important to truly develop data-oriented systems, instead of language-oriented ones. A client using Python can communicate with another using Java
+
+Two serialization formats are XML and JSON. 
+
+### XML and XML Schema
+
+In the eXtensible Markup Language (XML) there are start tags and end tags to represent a node or element. The name represents what it is. Complex elements are the ones that can have nested elements, and simple elements are the ones that can't. Indenting doesn't matter, similar to HTML. Comes from SGML (Standard Generalized Markup Language), as a simplified version.
+
+<img src="assets/66d15c2475bf1438b6ab82adb1c3a9b31361731b.png" title="" alt="" data-align="center">
+
+It could be said that a tag represents an object of something. For example, an object `instructions` could contain nested `steps` objects for a recipe. 
+
+When viewing XML as a tree we can represent each tag as a node, and every nested tag as a child. Also, any text node (content of a tag) and attribute node (attribute of a tag) is also a children of the tag that contains it. To traverse through the elements, paths can be created, like, for example, `/person/phone`.
+
+An XML Schema document is an XML document that is designed to restrict and define the multiple possible elements, and more, that could be created in the process of communicating through XML serialization. Like a contract to what is acceptable. Verification that the data is in the correct format.
+
+An XML validator takes in an XML Schema and an XML serialization to confirm that the data is correctly formatted.
+
+There are multiple XML Schema "languages" that are already defined by organizations or institutions. One of the most recognized and used one is XSD, by the World Wide Web Consortium (W3C).
+
+<img src="assets/f016dac5742a09726b1a8d265c51910634332e0a.png" title="" alt="" data-align="center">
+
+A schema can also define constraints for certain elements, allowing precise exchanging of data in a structured format. These are declared with already defined attributes by XSD that are applied to the element, such as `minOccurs` and `maxOccurs`. There are also other specific XSD elements to creaate restrictions (like `xs:restriction` and to achieve other semantic value. The `type` attribute is used to define the data type of the content of the element.
+
+* date format: YYYY-MM-DD
+
+* dateTime format: YYYY-MM-DDTHH:MM:SSZ, where T is just a delimiter and Z is the time zone to be used. 
+
+[A more complex schema to practice](https://www.w3schools.com/xml/schema_example.asp)
+
+`xml.etree.ElementTree` to parse XML, [documentation](https://docs.python.org/3/library/xml.etree.elementtree.html)
