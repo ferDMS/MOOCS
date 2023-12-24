@@ -186,3 +186,21 @@ A schema can also define constraints for certain elements, allowing precise exch
 [A more complex schema to practice](https://www.w3schools.com/xml/schema_example.asp)
 
 `xml.etree.ElementTree` to parse XML, [documentation](https://docs.python.org/3/library/xml.etree.elementtree.html)
+
+### JSON
+
+Vary native from JavaScript. Very similar to Python in the list and dictionary syntax. "Discovered" because the creator realized it could be used as a data interchange format from its normal use in JavaScript. JSON was created to be an easy to use format specifically designed for programming languages and AJAX, contrary to XML.
+
+JSON will never change just like the alphabet never changes. We might find ways to create words and sentences on top of the alphabet as we find ways to build applications on top of JSON. Once JSON is obsolete, something else will take over, but anything still built over JSON will keep working.
+
+### APIs
+
+APIs are born from a service-oriented-approach where you can offer a service to a client that you yourself aren't really the creator or responsible of. Through APIs you can connect different isolated systems into one to obtain different functionalities from each of them.
+
+[Service layer and service-oriented-systems](https://d3c33hcgiwev3.cloudfront.net/XQHLlV9MEeWHrhLGHHq1Gw.processed/full/540p/index.webm?Expires=1703548800&Signature=IOmdTgNDbpY-V8esDwdj8CrEpoWnY-d4bIF-K~1jLoT6BtR6d1B4rmgEurqTm9FpgENZF6mnjp8oiUrvh1xQjUVXUKeCIj1yobn1NoPr7QADyQiVjHFdL2IgAv-4l9wcmvEIcnvI7JFBjXcgWKOYLDE8KEsoqaC0GU8KV3hJQ18_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A)
+
+APIs represent a service layer that allow a system to use another system's functionalities, data, and more, based on a common format in which all systems can communicate after passing the local information through a service layer.
+
+APIs usually have documentation so that any external system can derive the functionalities to obtain and how to read the data that was passed through the service layer.
+
+Some APIs require personal authentication to keep track of individual users. This auth is done through matching tokens and keys provided during the request. Also, some APIs limit your usage of their methods and data, as they require more computation behind to be able to return the data that you need. This is why there are usually limitations on the amount of API calls that one can do for free, before breaching a range where a company starts monetizing their services. 
