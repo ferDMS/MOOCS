@@ -15,12 +15,14 @@ import regex
 def connectToDB() -> pyodbc.Cursor:
     # Information to execute the connection to the Azure Database
     server = "ferdms.database.windows.net"
-    user = "AzureDB"
 
-    # Insert the password for the SQL connection
-    print(f"Connecting to {server}\nUsing credentials:\n\tUser: {user}\n\tPassword: ", end="")
-    password = getpass.getpass('')
-    print()
+    # Obtain user and password from local file
+    login_file = input("SQL Credentials file name (leave blank for './credentials.secret'): ")
+    if len(login_file) < 1: login_file = "credentials.secret"
+    with open(login_file) as file:
+        user = file.readline().strip()
+        password = file.readline().strip()
+    print(f"Connecting to {server}...\n")
 
     # Prepare the ODBC connection string with the information provided
     conn_str = (
@@ -48,16 +50,18 @@ def connectToDB() -> pyodbc.Cursor:
     return cur
 
 
+# Connect to Azure Database
+cur = connectToDB()
+
 # Open file and obtain email logs (default is 'mbox-short.txt')
-file_name = input("Enter file name: ")
+file_name = input("Enter email logs file name: ")
 if len(file_name) < 1: file_name = "mbox-short.txt"
 with open(file_name, 'r') as file: log = file.read()
 
 # Use regular expressions to find all sender addresses
 senders = regex.findall(r'From:\s*(.*)\n', log)
 
-# Connect to Azure Database
-cur = connectToDB()
+# Stablish database name using the email log file name
 db_name = file_name.split('.')[0] + "_counts"
 
 # Create a fresh table where to save the email addresses and their counts if
@@ -94,6 +98,6 @@ cur.commit()
 # Obtain the top 5 senders by count and display them
 cur.execute(f"SELECT TOP(5) email, count FROM [{db_name}] ORDER BY count DESC")
 rows = cur.fetchall()
-print("Top 10 email counts\n--------------------")
-for row in rows:
-    print(f"{row.email}: {row.count}")
+print("\n\tTop 5 Email Senders\n-----------------------------------")
+for i in range(len(rows)):
+    print(f"{i+1}\t{rows[i].email}: {rows[i].count}")
