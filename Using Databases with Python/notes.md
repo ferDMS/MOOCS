@@ -2,7 +2,7 @@
 
 ## OOP in Python
 
-There are attributes and methods inside each instance of a class. Python always passes a parameter to every method call explicitly which contains a reference to the object at which the method is being called. By convention this first argument is always defined as `self`.
+There are attributes and methods inside each instance of a class. Python always passes a parameter to every method call implicitly which contains a reference to the object at which the method is being called. By convention this first argument is always defined as `self`.
 
 E.g.:
 
@@ -45,7 +45,7 @@ It extends the methods inside the original class to this subclass so that they c
 
 ## Relational Databases
 
-Databases emerged when people figured out how to solve the speed at which e can access data stored randomly in a disk. Through clever relations between data one can stop looking at the data in a straightforward and linear way and instead do some skips between the data to obtain only whatever we really need. This way we do not have to scan through petabytes of data to browse the internet.
+Databases emerged when people figured out how to solve the speed at which we can access data stored randomly in a disk. Through clever relations between data one can stop looking at the data in a straightforward and linear way and instead do some skips between the data to obtain only whatever we really need. This way we do not have to scan through petabytes of data to browse the internet.
 
 * Relation (table), tuple (row) and attribute (column)
 
@@ -71,6 +71,18 @@ Both roles involve different tasks and objectives surrounding the desired data. 
 
 * SQLite: very small so it can be built in into applications
 
-## Schema
+## Schema and Models
 
-A databse model or database schema is a contract which designates the structure and format of a DB. It specifies the data types for every attribute in a relation.
+A databse model or database schema is a contract which designates the structure and format of a DB. It specifies the data types for every attribute in a relation. It can be represented with an ER (Entity Relationship) model or kind of model that can represent the relationships between multiple objects (tables).
+
+A good way to map a system into a model is to determine the most basic entities or objects first and then keep describing its attributes and relations. Connect entities through identifiers that can be primary keys. Logical keys are used to designate a field that might be used as a key for a where clause, to make it faster.
+
+Different organizations might have different naming conventions for objects and keys.
+
+## Relational SQL
+
+We can use a `JOIN` betwen tables to glue them together. Without an on clause we will get all the possible combinations between the tuples in each table. With an on clause that uses the specific identifiers found on each table we will be able to match only the desired information between tables.
+
+We can match multiple tables in a single query like
+
+`SELECT \* FROM Track JOIN Genre JOIN Album JOIN Artist ON Track.albumId = Album.albumId AND Track.genreId = Genre.genreId AND Album.artistId = Artist.artistId````

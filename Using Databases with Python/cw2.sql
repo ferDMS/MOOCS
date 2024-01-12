@@ -1,0 +1,26 @@
+CREATE TABLE Genre (
+	genreId INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	name VARCHAR(50)
+)
+
+CREATE TABLE Artist (
+	artistId INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	name VARCHAR(50)
+)
+
+CREATE TABLE Album (
+	albumId INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	artistId INT FOREIGN KEY REFERENCES Artist(artistId),
+	title VARCHAR(50)
+)
+
+CREATE TABLE Track (
+	trackId INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	albumId INT FOREIGN KEY REFERENCES Album(albumId),
+	artistId INT FOREIGN KEY REFERENCES Artist(artistId),
+	genreId INT FOREIGN KEY REFERENCES Genre(genreId),
+	title VARCHAR(100),
+	len INT,
+	rating INT,
+	count INT
+)
