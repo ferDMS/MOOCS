@@ -85,4 +85,12 @@ We can use a `JOIN` betwen tables to glue them together. Without an on clause we
 
 We can match multiple tables in a single query like
 
-`SELECT \* FROM Track JOIN Genre JOIN Album JOIN Artist ON Track.albumId = Album.albumId AND Track.genreId = Genre.genreId AND Album.artistId = Artist.artistId````
+```sql
+SELECT * FROM Track JOIN Genre JOIN Album JOIN Artist ON Track.albumId = Album.albumId AND Track.genreId = Genre.genreId AND Album.artistId = Artist.artistId
+```
+
+In another way, which is actually slower, we can join through the `WHERE` clause
+
+```sql
+SELECT * FROM Track, Album, Artist, Genre WHERE Track.genreId = Genre.genreId, Track.albumId = Album.albumId, Album.artistId = Artist.artistId
+```
