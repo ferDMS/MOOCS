@@ -94,3 +94,17 @@ In another way, which is actually slower, we can join through the `WHERE` clause
 ```sql
 SELECT * FROM Track, Album, Artist, Genre WHERE Track.genreId = Genre.genreId, Track.albumId = Album.albumId, Album.artistId = Artist.artistId
 ```
+
+## 1 to N Relationships
+
+<img title="" src="assets/2024-01-13-14-20-31-image.png" alt="" data-align="center" width="511">
+
+## N to N Relationships
+
+Many to many relationships are different than one to many relationships because modeling both tables directly can be complicated (have a lot of unused data in both tables, different combinations, etc.). We can use a intermediary table between both that relates only the relevant keys in both tablesl, obtaining two 1 to N relationships.
+
+We can consider the intermediary table as a membership or contract table between the other two tables. Each element of both tables can have more than one contract but a contract will only relate a single element with another single element.
+
+<img src="assets/2024-01-13-14-35-18-image.png" title="" alt="" data-align="center">
+
+Order by can take more than argument. The first arguments are the ones with most priority and the last ones with the least. Each argument can be set to ASC OR DESC.
