@@ -108,3 +108,13 @@ We can consider the intermediary table as a membership or contract table between
 <img src="assets/2024-01-13-14-35-18-image.png" title="" alt="" data-align="center">
 
 Order by can take more than argument. The first arguments are the ones with most priority and the last ones with the least. Each argument can be set to ASC OR DESC.
+
+## Intro to Data Mining
+
+During a project it is common that we have multiple Python scripts that have different purposes that range in the different stages of recollecting and analyzing data from the web. This process could be described as "Personal Data Mining", since it isn't as complex to be considered data mining.
+
+* The retrieval can be paired with as DB to account for errors, saving data states
+
+* The raw data is then parsed or cleaned into another database
+
+* The clean data is passed through scripts to visualize and analyze it
