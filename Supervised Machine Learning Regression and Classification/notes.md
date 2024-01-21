@@ -58,12 +58,14 @@ Notation:
 
 - $(x^i,y^i)$: ith training example (ith row)
 
-- $w$, $b$: parameters / coefficients adjusted during the training to improve the model
+- $w$, $b$: parameters / coefficients adjusted during the training to improve the model. weights and bias
 
 The algorithm will produce a linear function that takes $x$ and produces an estimate to $y$, which is going to be called $\hat{y}$.
 
 $$
+\begin{align}
 \hat{y}=f_{w,b}(x)=wx+b
+\end{align}
 $$
 
 > For fixed $w$ and $b$, function of $x$
@@ -74,30 +76,131 @@ Through machine learning what we are going to predict are the specific parameter
 
 Matplotlib is used to plot data and numpy is used to do scientific calculations
 
-Create two one-dimensional Numpy arrays which are faster and smaller than a Python list. Inside we put all of the training examples, in one array the $x$ values and in the other the $y$ values. We can obtain their its size to obtain $m$.
+Create two one-dimensional Numpy arrays which are faster and smaller than a Python list. Inside we put all of the training examples, in one array the $x$ values and in the other the $y$ values. We can obtain their size to obtain $m$.
 
 With pyplot from matplotlib we can plot both arrays.
 
-## Squared Cost function
+## Cost / Loss function
 
 To evaluate how close an estimation is to the actual target we obtain the error by obtaining the difference between both values. Through the summation of all the errors we get the total error or cost of the estimations against the targets.
 
-By convention, we:
+By convention, for a squared cost function, we:
 
 - Divide the cost by $2m$ so the summation doesn't explode with large trainings sets.
 
 - Obtain the squared error since it gives better results for regression models
 
 $$
-J(w,b)=\frac{1}2m{}\sum_{i=1}^m(\hat{y}^{(i)}-y^{(i)})^2
+\begin{align}
+J(w,b)=\frac{1}{2m}\sum_{i=1}^m(\hat{y}^{(i)}-y^{(i)})^2
+\end{align}
 $$
 
 When $f(x)$ fits perfectly each target, then $J(w,b)=0$
 
 $J(w,b)$ is how the cost changes with the slope and intercept, so, 3 variables, represented as either a 3D surface or as a contour plot, which is like a topographic map.
 
-<img title="" src="assets/2024-01-15-00-06-35-image.png" alt="" data-align="center" width="625">
+The 3D surface will ressemble a bowl. This surface doesn't because of the specific relationship between the features and its targets, but in the end there will always be a minimum point for the surface. It can be visualized in a 2D space:
 
-<img title="" src="assets/2024-01-15-00-04-58-image.png" alt="" data-align="center" width="446">
+The point at which the cost is the least will be the global minimum of the function, and also our desired combination of parameters.
 
-The point at which the cost is the least will be our desired combination of parameters. To obtain it, we can obtain the global minimum point of the function.
+![](assets/2024-01-18-20-59-09-image.png)
+
+### Lab #2
+
+To perform the calculations required to obtain the linear regression function we can use numpy arrays and methods. Also unpacking of an iterable object via `foo(*list)`.
+
+To plot an interactive space into a Jupyter Notebook we can use the `ipywidgets` library. Using pyplot from matplot lib we can specify multiple properties of a graph, like:
+
+1. `.subplots(nrows, ncols)`: Creates a figure and a set of subplots.
+2. `.plot(x, y)`: Plots `y` versus `x`.
+3. `.scatter(x, y)`: Creates a scatter plot of `y` versus `x`.
+4. `.hlines(y, xmin, xmax)`: Draws horizontal lines at specified y-values.
+5. `.vlines(x, ymin, ymax)`: Draws vertical lines at specified x-values.
+6. `.set_title(title)`: Sets the title of the subplot.
+7. `.set_ylabel(ylabel)`: Sets the label of the y-axis.
+8. `.set_xlabel(xlabel)`: Sets the label of the x-axis.
+9. `.legend(loc)`: Adds a legend to the subplot.
+10. `.show()`: Displays the figure and its subplots.
+
+## Gradient Descent
+
+So, how do we minimize a function like the cost function $J$?
+
+Find the steepest point around a relative location forever until we reach a local minima of the function where we can't longer descend. The starting point will be certain values $b$ and $w$. By convention we start the gradient descend at $(0,0)$.  Different starting points can lead to different ending values when there is more than one local minima.
+
+$$
+\begin{align}
+w=w-\alpha\frac{d}{dw}J(w,b)
+\end{align}
+$$
+
+$$
+\begin{align}
+b=b-\alpha\frac{d}{db}J(w,b)
+\end{align}
+$$
+
+- $\alpha$ is the magnitude of the step or learning rate
+  
+  - If it small, the process will be slower but more precise
+  
+  - If it is big, we might overshoot the minimum and never reach it.
+
+- The derivative is the direction to which we "go down the hill".
+  
+  - If the rate of change is positive, decrease $w$, else, increase it.
+  
+  - The term is negative because negative slopes update the variable forward and positive slopes update it backwards, towards a minimum. If it were the opposite, we would be shooting to a maximum.
+
+Both equations must be simultaneously updated. We repeat the update until both values converge (where the derivative is really really small that the term is cancelled and we end up with $w=w$ and $b=b$  ).
+
+Considering:
+
+$$
+\begin{align}
+\frac{\partial J(w,b)}{\partial w}  &= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) - y^{(i)})x^{(i)}
+\end{align}
+$$
+
+$$
+\begin{align}
+  \frac{\partial J(w,b)}{\partial b}  &= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) - y^{(i)})
+\end{align}
+$$
+
+the final big equations extending $\frac{d}{dw}J(w,b)$, look like:
+
+$$
+\begin{align}
+w^{(j+1)}=w^{(j)}-\alpha\frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) - y^{(i)})x^{(i)}
+\end{align}
+$$
+
+$$
+\begin{align}
+b^{(j+1)}=b^{(j)}-\alpha\frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) - y^{(i)})
+\end{align}
+$$
+
+## Lab #3
+
+Because this is batch gradient descent (always taking into account all the training set for $f(w,b)$, to compute it we have to use two main loops:
+
+- $i$: To compute the summatory of all the costs and thus get the total cost for the specific $(w,b)$ pair, and then compute its corresponding derivative.
+
+- $j$: To compute each gradient until we end of the gradient descent
+
+First loop is a function on its own,
+
+`compute_gradient(x,y,w,b) -> (dJ_dw, dJ_db)`,
+
+to calculate the partial derivative (or gradient) which includes the cost summatory, and the second,
+
+`gradient_descent(x,y,w_in,b_in,alpha,*helper_functions) -> (fin_w,fin_b)`, 
+
+is another that will call the first to add the step as many times as needed to get to the minima.
+
+The last function can be stopped with a convergence threshold value `epsilon` (when $w$ and $b$ are unchanged when the gradient becomes really small because we are really close to the minima) or with a set `num_iters`. We combine both to instead define a `max_iters` value when the defined threshold can't be met.
+
+With a squared cost function, as we come closer to the minima the gradient becomes smaller, and thus we start taking smaller steps to the end. This is because in a cuadratic function we go from steep rates of change to flat ones as we approach a derivative with value 0.
