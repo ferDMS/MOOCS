@@ -46,7 +46,7 @@ Difference:
 
 Jupyter Notebooks are the exact same tools that many large companies are using to create ML environments. In these one can describe markdown and code cells united into one document. The code cells can be run in any order desired and belong to the same environment (meaning the result of a code block can be reflected in another).
 
-## Linear Regression
+## Simple Linear Regression
 
 It is the most common regression model. It uses a training set, which is the data used to train the model. This data can be represented as two columns with inputs / features and outputs / targets.
 
@@ -183,7 +183,7 @@ b^{(j+1)}=b^{(j)}-\alpha\frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) 
 \end{align}
 $$
 
-## Lab #3
+### Lab #3
 
 Because this is batch gradient descent (always taking into account all the training set for $f(w,b)$, to compute it we have to use two main loops:
 
@@ -204,3 +204,71 @@ is another that will call the first to add the step as many times as needed to g
 The last function can be stopped with a convergence threshold value `epsilon` (when $w$ and $b$ are unchanged when the gradient becomes really small because we are really close to the minima) or with a set `num_iters`. We combine both to instead define a `max_iters` value when the defined threshold can't be met.
 
 With a squared cost function, as we come closer to the minima the gradient becomes smaller, and thus we start taking smaller steps to the end. This is because in a cuadratic function we go from steep rates of change to flat ones as we approach a derivative with value 0.
+
+## Multiple Linear Regression
+
+When we want to train a regression model with multiple features we denote multiple $x$ features $(x_1,x_2,\dots,x_n)$ inside each training example $(x^{(1)},x^{(2)},\dots,x^{(m)})$. Each training example, is a list or vector of features. A regression model with $n$ features will have a vector of $n$ weights:
+
+$$
+f_{w,b}(x)=w_1x_1+w_2x_2+\ldots+w_nx_n+b=\vec{w}\cdot\vec{x}+b\\
+
+\vec{w}=[w_1,w_2,\ldots,w_n]\\
+
+\vec{b}=[b_1,b_2,\ldots,b_n]
+$$
+
+Implementing $f_{w,b}(x)$ with vectorization makes the computation faster and the code smaller. For example:
+
+```python
+x = np.array([10, 20, 30)
+w = np.array([-5.2, 1.2, 3.2])
+b = 4
+f = np.dot(w,x) + b
+```
+
+Adding more features to the cost and gradient descent functions is easy. It is like if we had more individual functions of $w_1$ and $x_{1}^{(i)}$ but for each weight, so $w_j$ and $x_j^{(i)}$.
+
+An alternative is the normal equation, only used in linear regression. It is a bad equation for a large amount of features (>10k) but can solve for $w$ and $b$ without iterations (parallel). May be used in the background of some ML libraries.
+
+### Lab #4
+
+Introduction to numpy vectors and matrices and their operations:
+
+```python
+# General operations:
+np.sum(a)
+np.mean(a)
+-a # [-a[0], ..., -a[n-1]]
+a + b # [a[0]+b[0], ..., a[n-1]+b[n-1]]
+a * 5 # [a[0]*5, ..., a[n-1]*5], Broadcast
+
+# Vector (x) Operations:
+np.zeros(m)
+np.arange(m) # Fills vector of size m with the sequence
+np.random.rand(m)
+np.array([1,...,10])
+a[-1]
+a[2:9:2]
+np.dot(a,b) # a[0]*b[0] + ... + a[n-1]*b[n-1]
+7.shape # ()
+[1,2,5].shape # (3,)
+
+# Matrix (X) Operations:
+np.zeros(m,n)
+np.arange(m).reshape(-1,n) # Create a new m based on n (m/n has to be exact)
+np.random.rand(m,n)
+np.array([[],...,[]])
+a[-1, 2]
+a[0:2, 2:9:2]
+a[1,:] == a[1]
+a.reshape(-1,2) # -1 determines m given previous size and n value
+[[1],[2],[3]].shape # (3,1)
+```
+
+Additionally, an integer can be changed into a floating point number like $4\rarr 4.$
+
+### Lab #5
+
+When we calculate the gradient $\frac{dJ(\vec{w}b)}{dw_j}$ we save it in the gradient vector $\vec{dw}[j]$, which saves each gradient of each feature. So, each training example $i$ from the training set of $m$ examples is iterated, inside which each feature $j$ is iterated from the $n$ features.
+
+As expected, we leverage the training examples' loop to keep constructing the $\frac{dJ(\vec{w,b})}{db}$ just as we used it in the simple regression. Important to remember that the purpose of this high level loop is to construct $f_{w_i,b}(x_i)$, which uses all features $j$ of a certain training example $i$, which means it uses the vector $X[i,:]$ a total $j$ times through dot product.
