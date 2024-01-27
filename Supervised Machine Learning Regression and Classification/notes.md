@@ -20,13 +20,13 @@ The more data is fed into a machine there more it can learn about a problem and 
 
 This type of learning is used when you know exactly what you want to give to the machine $x$ and what you want to get from it $y$. You give the machine examples of input, output pairs. By going through multiple examples the machine learns to predict the $y$ output from a given $x$ inputs.
 
-A **regression** attempts to predict a number from infinitely many possible outputs. For example a linear regression, which fits the prediction between $x$ and $y$ values with a linear relationship. Another is a logarithmic type, which first the data with a logarithmic function.
+A **regression** attempts to predict a number from infinitely many possible outputs. For example a linear regression, which fits the prediction between $x$ and $y$ values with a linear relationship. Another is a logarithmic type, which fits the data with a logarithmic function.
 
 The regression is visualized as the line of a function $f(x)$ in a scatter plot of $x$ vs $y$.
 
-A **classification** attempts to predict a category between a small amount of possible outputs in order to classify the given input into a group. There can be two main groups each with categories, or many groups, etc., as well as more than one input.
+A **classification** attempts to predict a category between a small amount of possible groups. It classifies the given input. There can be two main groups each with categories, or many groups, etc., as well as more than one input.
 
-The classification limit can be visualized as the boundary line between both output categories, either 2D for 1 input or 3D for 2 inputs.
+The classification limit can be visualized as the boundary line between both output categories, either 2D, line, for 1 input or 3D, surface, for 2 inputs.
 
 Main difference is the number of possible outputs between both algorithms.
 
@@ -185,11 +185,11 @@ $$
 
 ### Lab #3
 
-Because this is batch gradient descent (always taking into account all the training set for $f(w,b)$, to compute it we have to use two main loops:
+Because this is batch gradient descent (always taking into account all the training set for $f(w,b)$), to compute it we have to use two main loops:
 
 - $i$: To compute the summatory of all the costs and thus get the total cost for the specific $(w,b)$ pair, and then compute its corresponding derivative.
 
-- $j$: To compute each gradient until we end of the gradient descent
+- $j$: To compute each gradient until we end the gradient descent
 
 First loop is a function on its own,
 
@@ -226,7 +226,7 @@ b = 4
 f = np.dot(w,x) + b
 ```
 
-Adding more features to the cost and gradient descent functions is easy. It is like if we had more individual functions of $w_1$ and $x_{1}^{(i)}$ but for each weight, so $w_j$ and $x_j^{(i)}$.
+Adding more features to the cost and gradient descent functions is easy. It is like if we had more individual functions of $w$ and $x^{(i)}$ but for each weight, so $w_j$ and $x_j^{(i)}$.
 
 An alternative is the normal equation, only used in linear regression. It is a bad equation for a large amount of features (>10k) but can solve for $w$ and $b$ without iterations (parallel). May be used in the background of some ML libraries.
 
@@ -265,10 +265,92 @@ a.reshape(-1,2) # -1 determines m given previous size and n value
 [[1],[2],[3]].shape # (3,1)
 ```
 
-Additionally, an integer can be changed into a floating point number like $4\rarr 4.$
+Additionally, an integer can be changed into a floating point number like $4\rightarrow 4.$
 
 ### Lab #5
 
 When we calculate the gradient $\frac{dJ(\vec{w}b)}{dw_j}$ we save it in the gradient vector $\vec{dw}[j]$, which saves each gradient of each feature. So, each training example $i$ from the training set of $m$ examples is iterated, inside which each feature $j$ is iterated from the $n$ features.
 
 As expected, we leverage the training examples' loop to keep constructing the $\frac{dJ(\vec{w,b})}{db}$ just as we used it in the simple regression. Important to remember that the purpose of this high level loop is to construct $f_{w_i,b}(x_i)$, which uses all features $j$ of a certain training example $i$, which means it uses the vector $X[i,:]$ a total $j$ times through dot product.
+
+## Optimizing Gradient Descent
+
+When a model is trained it is likely that:
+
+- Features that can range a lot and are big will have smaller weights (to reduce the impact of big changes).
+
+- Features that range very little and are small will have bigger weights (to give more impact for small changes).
+
+To optimize gradient descent we can do feature scaling in order to rescale the training data so that the ranges of every feature are similar. When the features' ranges are similar so are (usually) the weights' ranges, and thus the time to search for each correct weight will be similar between both features.
+
+For example, performing gradient descent towards $w_1=50,w_2=0.1$ can take more time because we take more unecessary jumps in one variable while waiting for the other to arrive to the minimum point. Scaling features so that we go towards similar weights, like $w_1=0.45, w_2=0.75$ will make gradient descent faster.<img title="" src="assets/2024-01-26-20-17-56-image.png" alt="" data-align="center" width="612">
+
+Some types of scaling are:
+
+- Simple scaling from max: 
+
+$$
+x_j^{(i)}=\frac{x_j^{(i)}}{\text{max}(x_j)}\quad \text{with range}\quad [\ldots,1]
+$$
+
+- Mean normalization:
+
+$$
+x_j^{(i)}=\frac{x_j^{(i)}-\mu_j}{\text{max}(x_j)-\text{min}(x_j)}\quad \text{with range}\quad [-1, 1]
+$$
+
+- Standardization (Z-Score Normalization): Reduces impact of outliers
+
+$$
+x_j^{(i)} = \frac{x_j^{(i)}-\mu_j}{\sigma_j} 
+$$
+
+We can graph the cost across multiple iteration frames to confirm that the gradient descent is going as planned. The cost should never increase while the algorithm is running. When the cost stabilizes and stops decresing we say it has met a convergance point.
+
+### Lab #6
+
+We adjust the learning rate so that the cost never increases through operations, as that would mean we are overshooting the minimum.
+
+`np.ptp(array, axis)` returns the difference between its max and min values, obtaining range for the data. Useful to compare ranges of features before and after normalization (scaling).
+
+With multiple features since we can't plot the results against all of our features (high dimensional spaces), we can plot charts for each feature comparing the estimated and target prices separately. Note that both $y$ and $\hat{y}$ rely on all features and this is just a visual way to show how they change with respect to an $x_j$ feature.
+
+<img title="" src="assets/2024-01-26-20-00-26-image.png" alt="" width="591" data-align="center">
+
+## Polynomial Regression
+
+### Lab #7
+
+`np.c_(array1, array2, ..., arrayN)` concatenates multiple arrays long their second axis. This means $[1,2,3]$ and $[-1,-2.-3]$ is concatenated like $[[1,-1],[2,-2],[3,-3]]$.
+
+We can create more or different features by performing operations on the original ones. With the new features we can compute other types of feature-estimation correlations and observe different impacts on the final model that can make it more or less accurate (increase or decrease the cost). By doing this, we can determine new features that better model our target values.
+
+One of the ways to engineer a feature is to raise them to another power. By doing so, we change from fitting a line into fitting curves for our regression model. We can see this "modification" to a feature $x_j$ as an additional setting, similar to $w_j$, which affects the final model and can shape it closer to real values.
+
+A weight will be higher for a feature that has a great correlation with the target value and lower for features that can be dismissed. Considering this, by performing gradient descent over multiple engineered features of a single original feature varying in degree, we can tell which degree has the most impact by its resulting weight, and thus which order has the best correlation and that we should be using. For example:
+
+$$
+y=1\cdot x_0^2+0.049\\
+
+w=[1]
+$$
+
+<img title="" src="assets/2024-01-26-21-48-56-image.png" alt="" data-align="center" width="395">
+
+The weight value $1$ means it is a perfect correlation.
+
+Scaling the features and increasing the order of the polynomial we get:
+
+$$
+y=.0000527x+113x^2+.0000843x^3+123.5\\
+
+w=[5.27 \times 10^{-5}, 1.13 \times 10^{2}, 8.43 \times 10^{-5}]
+$$
+
+<img title="" src="assets/2024-01-26-22-34-33-image.png" alt="" data-align="center" width="405">
+
+The gigantic weight value for the second term compared to the diminuscule weight of the others tell us that only the term of degree $2$ is important.
+
+<img title="" src="assets/2024-01-26-22-06-17-image.png" alt="" width="610" data-align="center">
+
+Above, it is clear that the $x^2$ feature mapped against the target value $y$ is linear. Linear regression can then easily generate a model using that feature. Therefore, it's accurate to say that polynomial regression is essentially a specialized type of linear regression where you've "pre-processed" the features to represent non-linear relationships between the feature and the target.
