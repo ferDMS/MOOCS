@@ -354,3 +354,11 @@ The gigantic weight value for the second term compared to the diminuscule weight
 <img title="" src="assets/2024-01-26-22-06-17-image.png" alt="" width="610" data-align="center">
 
 Above, it is clear that the $x^2$ feature mapped against the target value $y$ is linear. Linear regression can then easily generate a model using that feature. Therefore, it's accurate to say that polynomial regression is essentially a specialized type of linear regression where you've "pre-processed" the features to represent non-linear relationships between the feature and the target.
+
+## Classification
+
+Predict a category or class instead of an infinte number of estimations through logistic regression. In binary classification we only have two possible answers, $1$ or $0$, or the positive and negative classes. Using linear regression to obtain a decision boundary is incorrect as outliers can heavily impact it and can cause misclassification.
+
+For example, a regression function $f_{w,b}(x)$ which when $<0.5$ classifies into $\text{A}$ and for values $>=0.5$ it instead classfies into $\text{B}$. Linear regression is not optimal because we don't care by how much a value should belong to one class, but just the fact that it does.
+
+Used for fraud detection, detect spam emails, etc.
