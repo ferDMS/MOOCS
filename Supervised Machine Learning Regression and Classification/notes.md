@@ -46,7 +46,9 @@ Difference:
 
 Jupyter Notebooks are the exact same tools that many large companies are using to create ML environments. In these one can describe markdown and code cells united into one document. The code cells can be run in any order desired and belong to the same environment (meaning the result of a code block can be reflected in another).
 
-## Simple Linear Regression
+## Regression
+
+#### Simple Linear
 
 It is the most common regression model. It uses a training set, which is the data used to train the model. This data can be represented as two columns with inputs / features and outputs / targets.
 
@@ -72,15 +74,13 @@ $$
 
 Through machine learning what we are going to predict are the specific parameters needed for our linear function so that every $y^i$ value is close to every $\hat{y}^i$.
 
-### Lab #1
-
 Matplotlib is used to plot data and numpy is used to do scientific calculations
 
 Create two one-dimensional Numpy arrays which are faster and smaller than a Python list. Inside we put all of the training examples, in one array the $x$ values and in the other the $y$ values. We can obtain their size to obtain $m$.
 
 With pyplot from matplotlib we can plot both arrays.
 
-## Cost / Loss function
+#### Cost / Loss function
 
 To evaluate how close an estimation is to the actual target we obtain the error by obtaining the difference between both values. Through the summation of all the errors we get the total error or cost of the estimations against the targets.
 
@@ -106,8 +106,6 @@ The point at which the cost is the least will be the global minimum of the funct
 
 ![](assets/2024-01-18-20-59-09-image.png)
 
-### Lab #2
-
 To perform the calculations required to obtain the linear regression function we can use numpy arrays and methods. Also unpacking of an iterable object via `foo(*list)`.
 
 To plot an interactive space into a Jupyter Notebook we can use the `ipywidgets` library. Using pyplot from matplot lib we can specify multiple properties of a graph, like:
@@ -123,7 +121,7 @@ To plot an interactive space into a Jupyter Notebook we can use the `ipywidgets`
 9. `.legend(loc)`: Adds a legend to the subplot.
 10. `.show()`: Displays the figure and its subplots.
 
-## Gradient Descent
+#### Gradient Descent
 
 So, how do we minimize a function like the cost function $J$?
 
@@ -183,8 +181,6 @@ b^{(j+1)}=b^{(j)}-\alpha\frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) 
 \end{align}
 $$
 
-### Lab #3
-
 Because this is batch gradient descent (always taking into account all the training set for $f(w,b)$), to compute it we have to use two main loops:
 
 - $i$: To compute the summatory of all the costs and thus get the total cost for the specific $(w,b)$ pair, and then compute its corresponding derivative.
@@ -205,7 +201,7 @@ The last function can be stopped with a convergence threshold value `epsilon` (w
 
 With a squared cost function, as we come closer to the minima the gradient becomes smaller, and thus we start taking smaller steps to the end. This is because in a cuadratic function we go from steep rates of change to flat ones as we approach a derivative with value 0.
 
-## Multiple Linear Regression
+### Multiple Linear
 
 When we want to train a regression model with multiple features we denote multiple $x$ features $(x_1,x_2,\dots,x_n)$ inside each training example $(x^{(1)},x^{(2)},\dots,x^{(m)})$. Each training example, is a list or vector of features. A regression model with $n$ features will have a vector of $n$ weights:
 
@@ -229,8 +225,6 @@ f = np.dot(w,x) + b
 Adding more features to the cost and gradient descent functions is easy. It is like if we had more individual functions of $w$ and $x^{(i)}$ but for each weight, so $w_j$ and $x_j^{(i)}$.
 
 An alternative is the normal equation, only used in linear regression. It is a bad equation for a large amount of features (>10k) but can solve for $w$ and $b$ without iterations (parallel). May be used in the background of some ML libraries.
-
-### Lab #4
 
 Introduction to numpy vectors and matrices and their operations:
 
@@ -267,13 +261,11 @@ a.reshape(-1,2) # -1 determines m given previous size and n value
 
 Additionally, an integer can be changed into a floating point number like $4\rightarrow 4.$
 
-### Lab #5
-
 When we calculate the gradient $\frac{dJ(\vec{w}b)}{dw_j}$ we save it in the gradient vector $\vec{dw}[j]$, which saves each gradient of each feature. So, each training example $i$ from the training set of $m$ examples is iterated, inside which each feature $j$ is iterated from the $n$ features.
 
 As expected, we leverage the training examples' loop to keep constructing the $\frac{dJ(\vec{w,b})}{db}$ just as we used it in the simple regression. Important to remember that the purpose of this high level loop is to construct $f_{w_i,b}(x_i)$, which uses all features $j$ of a certain training example $i$, which means it uses the vector $X[i,:]$ a total $j$ times through dot product.
 
-## Optimizing Gradient Descent
+#### Optimizing Gradient Descent
 
 When a model is trained it is likely that:
 
@@ -307,8 +299,6 @@ $$
 
 We can graph the cost across multiple iteration frames to confirm that the gradient descent is going as planned. The cost should never increase while the algorithm is running. When the cost stabilizes and stops decresing we say it has met a convergance point.
 
-### Lab #6
-
 We adjust the learning rate so that the cost never increases through operations, as that would mean we are overshooting the minimum.
 
 `np.ptp(array, axis)` returns the difference between its max and min values, obtaining range for the data. Useful to compare ranges of features before and after normalization (scaling).
@@ -317,9 +307,7 @@ With multiple features since we can't plot the results against all of our featur
 
 <img title="" src="assets/2024-01-26-20-00-26-image.png" alt="" width="591" data-align="center">
 
-## Polynomial Regression
-
-### Lab #7
+### Polynomial
 
 `np.c_(array1, array2, ..., arrayN)` concatenates multiple arrays long their second axis. This means $[1,2,3]$ and $[-1,-2.-3]$ is concatenated like $[[1,-1],[2,-2],[3,-3]]$.
 
@@ -359,6 +347,52 @@ Above, it is clear that the $x^2$ feature mapped against the target value $y$ is
 
 Predict a category or class instead of an infinte number of estimations through logistic regression. In binary classification we only have two possible answers, $1$ or $0$, or the positive and negative classes. Using linear regression to obtain a decision boundary is incorrect as outliers can heavily impact it and can cause misclassification.
 
-For example, a regression function $f_{w,b}(x)$ which when $<0.5$ classifies into $\text{A}$ and for values $>=0.5$ it instead classfies into $\text{B}$. Linear regression is not optimal because we don't care by how much a value should belong to one class, but just the fact that it does.
+For example, a regression function $f_{w,b}(x)$ that classifies $<0.5$ values into $\text{A}$ and $>=0.5$ values to $B$ instead. Linear regression is not optimal because we don't care by how much a value should belong to one class, but just the fact that it does. That's why outliers and more normal values should be treated equally only taking into account their relative location to the classification boundary.
 
 Used for fraud detection, detect spam emails, etc.
+
+### Simple, Multiple, Polynomial
+
+A sigmoid function is used to calculate the "probability" that the class $y$ is $1$ depending on $x$ with parameters $\vec{w}$ and $b$.
+
+$$
+\begin{align}
+P(y=1|x;\vec{w},b)
+\end{align}
+$$
+
+The general form of a logistic regression function is:
+
+$$
+\begin{align}
+f_{\vec{w},b}(\vec{x})=\frac{1}{1+e^{(\vec{w}\cdot \vec{x}+b)}}
+\end{align}
+$$
+
+$$
+\begin{align}
+g(z)=\frac{1}{1+e^{-z}}
+\end{align}
+$$
+
+It uses the general linear equation as the $z$ value. $z$ will be of size $m$, depending on the amount of training examples provided. As $z$ becomes greater than $0$, then $e^{-z}$ will start becoming smaller and smaller. As it does, $1+e^{-z}$ becomes to get closer and closer to 1 but not quite. Thus, $\frac{1}{1+e^{-z}}$ gets closer and closer to $100\%$.
+
+Another way to see the sigmoid function in logistic regression is as a modification to the linear regression function tweaked so that it can correctly predict a probability between $0$ and $1$. The $z$ value is the estimations of the linear regression being passed into a classification problem.
+
+A logistic regression only focuses on defining a correct decision boundary. That's what is really getting optimized.
+
+`np.exp(a)`, to obtain result of $e^{a}$
+
+The decision boundary visualized for a multiple logistic regression model, specifically between two features, looks like:
+
+<img title="" src="assets/2024-02-18-15-48-43-image.png" alt="" width="614" data-align="center">
+
+$x_1+x_2=3$ can be converted to a 2D graph like the previous one as $x_2$ in terms of $x_1$ like: $x_2=-x_1+3$. The negative parameter makes the correlation negative. 
+
+Decision boundaries can also be non-linear, as in of higher degree. For example, a circular decision boundary.<img title="" src="assets/2024-02-18-16-09-03-image.png" alt="" data-align="center" width="598">Over fitting can also happen if we try using a feature considering many possible degrees for the calculation, creating graphs that look like spots.
+
+### Cost / Loss Function
+
+### Gradient Descent
+
+## Overfitting
