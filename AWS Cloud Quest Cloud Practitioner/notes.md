@@ -46,7 +46,7 @@ Many instance types depending on CPU, Memory, GPU, Storage, and Networking. Ther
 
 Persistent storage can go to an EBS. Many EBS volumes for an instance, but only one instance assigned for each EBS. Because of this "mounting", 0-9ms latency. Volume types: SSDs for high-speed, latency-sensitive small operations, best for in I/O ops/s. HDDs best for MB and GB/s on fewer txs. Backup snapshots go to S3 that are incremental (track changes and non-redundant backups). DLM (data lifecyle manager) also works for snapshots. Encrypted static and in-transit. Elastic in size (resize as app changes).
 
-<img title="" src="../assets/2024-02-17-21-00-38-image.png" alt="" width="496" data-align="center">
+<img title="" src="assets/80594d382b98072fd71ddf627bd7ce43f3db8708.png" alt="" width="496" data-align="center">
 
 ### Practice
 
