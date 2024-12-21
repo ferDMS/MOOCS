@@ -1,4 +1,4 @@
-# AWS Cloud Quest: Cloud Practitioner
+## AWS Cloud Quest: Cloud Practitioner
 
 Basic gamified course to go through the basic AWS services, completing assignments that help apply the learnt knowledge and gaining experience by deploying solutions.
 
@@ -10,7 +10,7 @@ AWS Regions -> 2+ (3) Availability Zones AZ -> 1+ (3) Data Centers DC -> Point o
 
 Redundancy and reliability (with load balancers for outages), Custom hardware, Security (military and secret orgs use it), Scalability (according to needs and usage). Low cost (because it's the biggest DC footprint).
 
-<img title="" src="assets/2024-01-30-17-53-12-image.png" alt="" data-align="center" width="643">
+![](assets/2024-01-30-17-53-12-image.png)
 
 ## Amazon S3
 
@@ -46,7 +46,7 @@ Many instance types depending on CPU, Memory, GPU, Storage, and Networking. Ther
 
 Persistent storage can go to an EBS. Many EBS volumes for an instance, but only one instance assigned for each EBS. Because of this "mounting", 0-9ms latency. Volume types: SSDs for high-speed, latency-sensitive small operations, best for in I/O ops/s. HDDs best for MB and GB/s on fewer txs. Backup snapshots go to S3 that are incremental (track changes and non-redundant backups). DLM (data lifecyle manager) also works for snapshots. Encrypted static and in-transit. Elastic in size (resize as app changes).
 
-<img title="" src="assets/80594d382b98072fd71ddf627bd7ce43f3db8708.png" alt="" width="496" data-align="center">
+![](assets/80594d382b98072fd71ddf627bd7ce43f3db8708.png)
 
 ### Practice
 
@@ -56,4 +56,4 @@ Security groups for different types of connections which expand different ports 
 
 At initiation of the instance we can give a script for it to run after creation. Our script sets up an `index.html` file to host a web server.
 
-http://ec2-`ip separated by -`.compute-1.amazonaws.com/
+http ://ec2-`10-0-0-1`.compute-1.amazonaws.com/

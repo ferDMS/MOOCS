@@ -36,7 +36,7 @@ Multiple categories of services: compute, ar&vr, iot, etc.
 
 One or many services inside each category
 
-A solution is comprised of multiple services interconnected. A VPC (service) hosting an EC2 connected to a DynamoDB and an Amazon S3.
+A solution is comprised of multiple services interconnected. Example: A VPC (service) hosting an EC2 connected to a DynamoDB and an Amazon S3.
 
 Connect via AWS console (platform) or CLI or SDKs.
 
