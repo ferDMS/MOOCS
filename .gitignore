@@ -1,3 +1,4 @@
 *.vs
 *.secret
 *.DS_Store
+*.vscode
