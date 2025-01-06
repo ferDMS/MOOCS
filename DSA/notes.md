@@ -43,3 +43,11 @@ for i in range(n):
 print(original)
 # [10, 5, -5, -5, -15]
 ```
+
+## Prefix Sum
+
+It's a basic technique that ressembles DP in some ways, since it breaks down a problem in subproblems that are overlapping and that are built up incrementally. By keeping an array with the result of the calculations for indices `i` and lower (the "sum" for our prefix) we can build the solution for the following index `i+1` by using the latest calculated prefix sum.
+
+It's helpful for cumulative calculations that involve ranges or attributes specific to an element's location (index).
+
+Because of how it works, a prefix sum is like the "sweep" explained above.
