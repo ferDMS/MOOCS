@@ -51,3 +51,84 @@ It's a basic technique that ressembles DP in some ways, since it breaks down a p
 It's helpful for cumulative calculations that involve ranges or attributes specific to an element's location (index).
 
 Because of how it works, a prefix sum is like the "sweep" explained above.
+
+## Bitwise operations
+
+These are operations that work directly over the binary representation of integers. We take as input the two integers we'll be applying the operation over, and get as output another int.
+
+They are called "bitwise" precisely because we apply the operation over THE BITS of the integers, not over the integers themselves. So, we take each of the bits of each number (by position) and compare them between each other so as to apply the operation.
+
+For example:
+
+```python
+# Bitwise AND
+5 & 3 # 0101 & 0011 -> 0001 -> int 1
+
+# Bitwise OR
+5 | 3 # 0101 | 0011 -> 0111 -> int 7
+
+# Bitwise XOR
+5 ^ 3 # 0101 ^ 0011 -> 0110 -> int 6
+
+# Bitwise NOT
+~5    # ~0101       -> 1010 -> int 10
+```
+
+Apart from these basic boolean operations over bits, we can also manipulate them in another very interesting way.
+
+We perform Bit Shifting to shift ALL THE BITS of an int to the right or left.
+
+The shift does NOT cycle the bits, but the state of the bit we add or remove can change. Specifically, the behavior for shifts will is:
+
+- For shifts to the left, be the number either positive or negative, we add 0s at the rightmost position.
+- For shifts to the right things change a bit. For positive numbers we add 0s at the leftmost position. 
+- For negative numbers, which are represented in two's complement, we add 1s at the leftmost position in order to preserve the negative value. This because a complement means that bits are inverted "infinitely", so all 0s to the left of positive numbers would acount for 1s.
+
+Remember, to convert a number to and from two's complement we:
+
+- Invert the bits
+- Add one
+
+The operator shifts an integer (the one to its left), by X bits (the int to its right).
+
+```python
+# Left shift of positive
+5 << 1 # 0101 -> 1010 -> int 10
+
+# Left shift of negative
+-5 << 1 # 1011 -> 0110 -> int -10
+
+# Right shift of positive
+5 >> 1 # 0101 -> 0010 -> int 2
+
+# Right shift of negative
+-5 >> 1 # 1011 -> 1101 -> int -3
+```
+
+Basic way of efficiently "iterating" over bits using bitwise operations.
+
+Careful: This method "destroys" the number (by shifting bits to "read" them)
+
+```python
+# For positive numbers
+# Alters the original number
+num = 5
+temp = num
+while num > 0
+    print(num & 1) # "Extract" least significant bit
+    num = num >> 1 # "Move" to next bit
+
+# For negative numbers (since 1s to the left in a complement are "infinite")
+# Doesn't alter the original number
+n = -5
+num_bits = 8  # Limit to 8 bits
+for i in range(num_bits):
+    print((n >> i) & 1)
+```
+
+A clever way to flip the bit at the ith position:
+
+```python
+n = n ^ (1 << i)
+# 5 ^ (1 << 2) -> 0101 ^ 0100 -> 0001 -> int 1
+```
