@@ -132,3 +132,27 @@ A clever way to flip the bit at the ith position:
 n = n ^ (1 << i)
 # 5 ^ (1 << 2) -> 0101 ^ 0100 -> 0001 -> int 1
 ```
+
+## XOR operator
+
+One of the most commonly used for leetcode problems because of its interesting properties that make very complex problems reduce to simple abstractions.
+
+The best way to see the operator is as a "bit flip", which can be seen in the operator's truth table:
+
+| $A$ | $B$ | $A \oplus B$ |
+|:-:|:-:|:-------:|
+| 0 | 0 |    0    |
+| 0 | 1 |    1    |
+| 1 | 0 |    1    |
+| 1 | 1 |    0    |
+
+Viewing the operation as nothing but a "toggle", we can easily identify the following properties:
+
+- Commutative: $a \oplus b = b \oplus a$
+- Associative: $a \oplus (b \oplus c) = (a \oplus b) \oplus c$
+- Identity: $a \oplus 0 = a$ (doesn't change)
+- Self-inverse: $a \oplus a = 0$ (always is 0)
+
+Taking these properties we can create interesting phenomenon to simplify complex calculations:
+
+- Cancellation: When a same element is XORed with itself an even number of times, it cancels to just $0$. Similarly, the element XORed with itself an odd number of times will just leave the original element.
