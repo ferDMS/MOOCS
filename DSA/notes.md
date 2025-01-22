@@ -156,3 +156,11 @@ Viewing the operation as nothing but a "toggle", we can easily identify the foll
 Taking these properties we can create interesting phenomenon to simplify complex calculations:
 
 - Cancellation: When a same element is XORed with itself an even number of times, it cancels to just $0$. Similarly, the element XORed with itself an odd number of times will just leave the original element.
+
+## Reverse Mapping
+
+This technique is useful when we are working with two different spaces. Specially when our task is to determine connections, match elements or verify a "mapping" between both spaces (a condition that rules the transformation of elements between spaces, like a function or relationship).
+
+The easiest way to work with mappings is through hashmaps, in order to match the "output" of one space into the other's "input".
+
+Also, with these type of problems it might be helpful solve the problem in the reverse order of which it is described. For example, if we were asked to iterate forward through `arr`, of size $m\cdot n$, until filling an $m\cdot n$ matrix `mat` based on some criteria, we could use the criteria to iterate `mat` instead until getting an answer from `arr`.
