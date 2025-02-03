@@ -244,6 +244,8 @@ print(ds.find(3))  # Should output root of set containing 3, which is 3
 print(ds.find(4))  # Should output root of set containing 4, which is 3
 ```
 
+> Check out Leetcode [684. Redundant Connection](https://leetcode.com/problems/redundant-connection/description/)
+
 ## LRU Cache and OrderedDict
 
 An **LRU Cache** stands for Least Recently Used Cache. It's works with a given `capacity`, defined when instantiated, so that it will store up to a certain number of elements. It's most interesting functionality, and the one that gives it its name, is that it will keep an "order" or some type of "timestamp" of when an element was last used. This way, we could say that:
@@ -319,3 +321,5 @@ class LRUCache:
                 self.d.popitem(last=False)
             self.d[key] = value
 ```
+
+> Check out Leetcode [146. LRU Cache](https://leetcode.com/problems/lru-cache/description/)
