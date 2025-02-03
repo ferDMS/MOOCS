@@ -244,3 +244,78 @@ print(ds.find(3))  # Should output root of set containing 3, which is 3
 print(ds.find(4))  # Should output root of set containing 4, which is 3
 ```
 
+## LRU Cache and OrderedDict
+
+An **LRU Cache** stands for Least Recently Used Cache. It's works with a given `capacity`, defined when instantiated, so that it will store up to a certain number of elements. It's most interesting functionality, and the one that gives it its name, is that it will keep an "order" or some type of "timestamp" of when an element was last used. This way, we could say that:
+
+- Any operation over a certain key of the cache, (be it `put(key, val)` or `get(key)`), will make the given key the **most recently used** element (i.e.: freshest element).
+- On the contrary, as we run operations over other keys, we'll have a ***least recently used** element (i.e.: oldest element to have been used).
+
+Keeping this order is vital, because our cache has a limited `capacity`.:
+
+- If we want to insert a new (key, val) pair to a **FULL** LRU Cache, we will remove the **least recently used** to make space for our **most recently used**, and new, element.
+- The above process is called `eviction`.
+
+What data structure could help with this? Yes, an **ordered dict**.
+
+An **ordered dict** data structure keeps elements in a hashmap with a given order. The powerful thing about this dictionary is its use of a **doubly linked list** beneath it to keep the order in which each element has been used. This way, we can keep O(1) insertion, deletion, and look-up times, thus being very very efficient.
+
+As a refresher:
+ 
+- A `DLL` data structure contains nothing but a `head` and `tail` properties. Both of these are Doubly Linked List `Node` objects.
+- Each `Node` object contains as properties: `val`, `prev`, and `next`, where `prev` and `next` contain references to other `Node` objects.
+- So, an empty Doubly Linked List will just contain a `head` and `tail` pointing to each other.
+- But a filled DLL will have references to nodes between `head` until getting to `tail`.
+
+The best way to have O(1) look-up times for any LinkedList is through the use of a hashmap `nodes`. Specifically, using `key` : `Node(val)` pairs.
+
+Now that we've reviewed the workings of a Linked List, how will it help us?
+
+The most important method our `OrderedDict` will make use of in our DLL is `move_to_end(key)`. Through the use of the `nodes` hashmap to look-up the `key`, this method works in O(1) time. It just shifts a node's position to the last position (tail). A basic implementation looks like:
+
+```python
+def move_to_end(key):
+    node = nodes[key]
+    # If already tail, do nothing
+    if nodes[key] == self.tail.prev:
+        return
+    # Connect prev and next of node
+    node.prev.next, node.next.prev = node.next, node.prev
+    # Connect node to tail and its previous
+    node.next, node.prev = self.tail, self.tail.prev
+    # Connect previous tail to node
+    self.tail.prev.next, self.tail.prev = node, node
+```
+
+Python's built-in `OrderedDict` already contains the method `move_to_end(key, last=True)`.
+
+- Move the key to the left end (first element, with `last=False`) or...
+- Move the key to the right end (last element, with `last=True`)
+
+So, the final implementation of an `LRUCache` class using `OrderedDict` looks like:
+
+```python
+
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.d = OrderedDict()
+    
+    def get(self, key):
+        if key not in self.d:
+            return -1
+        else:
+            self.d.move_to_end(key, last=True)
+            return self.d[key]
+
+    def put(self, key, value):
+        if key in self.d:
+            self.d[key] = value
+            self.d.move_to_end(key, last=True)
+        else:
+            if len(self.d) >= self.capacity:
+                self.d.popitem(last=False)
+            self.d[key] = value
+```
