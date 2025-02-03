@@ -164,3 +164,83 @@ This technique is useful when we are working with two different spaces. Speciall
 The easiest way to work with mappings is through hashmaps, in order to match the "output" of one space into the other's "input".
 
 Also, with these type of problems it might be helpful solve the problem in the reverse order of which it is described. For example, if we were asked to iterate forward through `arr`, of size $m\cdot n$, until filling an $m\cdot n$ matrix `mat` based on some criteria, we could use the criteria to iterate `mat` instead until getting an answer from `arr`.
+
+## Disjoin-Sets and Union-Find
+
+A **disjoin-set data structure** keeps track of $n$ elements along one or more pairwise disjoint sets (non-overlapping) $S=\{S_1, S_2,\ldots,S_r\}$. Each $S_i$ should have at least one element, and have an arbitrary element chosen as its representative, denoted as $rep[S_i]$.
+
+> An example for a set's representative is the root of a group of nodes in a directed graph.
+
+Keeping elements in such sets or groups allow us to perform a very powerful algorithm called **union-find**. The algorithm has three primary operations:
+
+- `Make(x)`: Create a new set with one element
+- `Find(x)`: Determine the subset where an element is contained
+- `Union(x, y)`: Union of $S_x$ and $S_y$ only if both elements $x$ and $y$ are in fact in distinct sets, such that $S_x \neq S_y$.
+
+The most common representation for this data structure is a tree:
+
+![](./assets/image.png)
+
+Each element $x_i$ or $y_i$ started off as `Make(x)` with representative as themselves.
+
+The representative for each of these sets was changed through `Union()` operations. So, we changed the "root" of each $x_i$ and $y_i$ element to eventually become $x_1$ and $y_1$ respectively.
+
+### 1st Improvement: Union By Size
+
+If the `Union()` concatenated each element from $S_y$ into $S_x$, so, the second set to the first, our worse case scenario would be $\text{Union}(i, i+1)$ for $i = n-2,n-3,\ldots,0$. In such scenario we would have a time complexity of $O(n^2)$
+
+Instead, we can try to concatenate the smallest set into the largest. If we always concatenated this way across all `Union()` operations until achieving one unique set, we would join exactly $n-1$ times. So, $O(n)$
+
+To do this we would maintain a `height` array with the size of each of our disjoint sets. When doing `Union()`, we choose the set with the lowest height and update its root's representative to the largest set's root.
+
+### 2nd Improvement: Path Compression
+
+Then, as `Find(x)` operations are performed, we seek up the set's representative with a time complexity of $O(\text{lg}\ n)$, going up the tree until the root.
+
+Now, if after finding the root for $x_i$ we updated our current representative to the root x_1$, the next `Find(x)` operation would be $O(1)$ since we are already there.
+
+Finally we would have something like:
+
+![](assets/image2.png)
+
+And this tree would continue compressing with the more `Find()` operations we perform.
+
+```python
+# 1-indexed disjoint set
+class DisjointSet:
+    def __init__(self, n):
+        self.n = n+1
+        self.repr = list(range(self.n))
+        self.height = [0] * self.n
+
+    def find(self, x):
+        if self.repr[x] != x:
+            self.repr[x] = self.find(self.repr[x])
+        return self.repr[x]
+
+    def union(self, x, y):
+        rootX = self.find(x)
+        rootY = self.find(y)
+
+        if rootX != rootY:
+            if self.height[rootX] > self.height[rootY]:
+                self.repr[rootY] = rootX
+            elif self.height[rootX] < self.height[rootY]:
+                self.repr[rootX] = rootY
+            else:
+                self.repr[rootY] = rootX
+                self.height[rootX] += 1
+
+# Example usage:
+ds = DisjointSet(5)
+
+ds.union(0, 1)
+ds.union(1, 2)
+ds.union(3, 4)
+
+print(ds.find(0))  # Should output root of set containing 0, which is 0
+print(ds.find(2))  # Should output root of set containing 2, which is 0
+print(ds.find(3))  # Should output root of set containing 3, which is 3
+print(ds.find(4))  # Should output root of set containing 4, which is 3
+```
+
