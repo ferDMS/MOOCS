@@ -248,7 +248,7 @@ print(ds.find(4))  # Should output root of set containing 4, which is 3
 
 ## LRU Cache and OrderedDict
 
-An **LRU Cache** stands for Least Recently Used Cache. It's works with a given `capacity`, defined when instantiated, so that it will store up to a certain number of elements. It's most interesting functionality, and the one that gives it its name, is that it will keep an "order" or some type of "timestamp" of when an element was last used. This way, we could say that:
+An **LRU Cache** stands for Least Recently Used Cache. It works with a given `capacity`, defined when instantiated, so that it will store up to a certain number of elements. It's most interesting functionality, and the one that gives it its name, is that it will keep an "order" or some type of "timestamp" of when an element was last used. This way, we could say that:
 
 - Any operation over a certain key of the cache, (be it `put(key, val)` or `get(key)`), will make the given key the **most recently used** element (i.e.: freshest element).
 - On the contrary, as we run operations over other keys, we'll have a ***least recently used** element (i.e.: oldest element to have been used).
@@ -291,8 +291,8 @@ def move_to_end(key):
 
 Python's built-in `OrderedDict` already contains the method `move_to_end(key, last=True)`.
 
-- Move the key to the left end (first element, with `last=False`) or...
-- Move the key to the right end (last element, with `last=True`)
+- Move the key to the left end (first element) with `last=False` or...
+- Move the key to the right end (last element) with `last=True`
 
 So, the final implementation of an `LRUCache` class using `OrderedDict` looks like:
 
